@@ -5,7 +5,15 @@ import { useCallback, useState } from 'react';
 import MenuItem from './MenuItem';
 import useRegisterModal from '@/app/hooks/useRegisterModal';
 import useLoginModal from '@/app/hooks/useLoginModal';
-const USerMenu = () => {
+import { User } from '@prisma/client';
+import {signOut} from 'next-auth/react'
+interface UserMenuProps{
+  currentUser?: User | null
+}
+
+const USerMenu: React.FC<UserMenuProps> = ({
+  currentUser
+}) => {
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const [isOpen, setIsOpen] = useState(false);
@@ -54,10 +62,23 @@ const USerMenu = () => {
       {isOpen && (
         <div className='absolute rounded-xl shadow-md w-{40vw} md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm'>
           <div className='flex flex-col cursor-pointer'>
+            {currentUser ? (
             <>
-              <MenuItem onClick={loginModal.onOpen} label='Login'></MenuItem>
+              <MenuItem onClick = {()=>{}} label='My trips'></MenuItem>
+              <MenuItem onClick={()=>{}} label='My favourites'></MenuItem>
+              <MenuItem onClick={()=>{}} label='My reservations'></MenuItem>
+              <MenuItem onClick={()=>{}} label='My properties'></MenuItem>
+              <MenuItem onClick={() => { }} label='Airbnb my home'></MenuItem>
+              <hr />
+              <MenuItem onClick={() => signOut()} label='Logout'></MenuItem> 
+                
+            </>
+            ): (
+              <>
+              <MenuItem onClick = {loginModal.onOpen} label='Login'></MenuItem>
               <MenuItem onClick={registerModal.onOpen} label='Sign up'></MenuItem>
             </>
+      )}
           </div>
         </div>
       )}
